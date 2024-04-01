@@ -36,6 +36,42 @@
                 </div>
             </div>
         </nav>
+        <!-- Defines a variables called 'messages' and sets it to the return 
+        value from calling the get_flashed_messages function (get the messages
+        with their categories) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            <!-- If any messages were returned... -->
+            {% if messages %}
+            <!-- For each message and its category... -->
+                {% for category, message in messages %}
+                    <!-- If the category of the message is error -->
+                    {% if category == 'error' %}
+                    <!-- Use class alert-danger... -->
+                    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                        <!-- Display the message. -->
+                        {{ message }}
+                        <!-- As well as a button to dismiss the message. -->
+                        <button type="button" class="close" data-dismiss="alert">
+                            <!-- &times; is a special character code for a fancy X -->
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- Otherwise... -->
+                    {% else %}
+                    <!-- Use class alert-success... -->
+                    <div class="alert alert-success alter-dismissable fade show" role="alert">
+                        <!-- Display the message. -->
+                        {{ message }}
+                        <!-- As well as a button to dismiss the message. -->
+                        <button type="button" class="close" data-dismiss="alert">
+                            <!-- &times; is a special character code for a fancy X -->
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         <div class="container">
             {% block content %}
