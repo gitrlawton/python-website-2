@@ -4,6 +4,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from os import path
+# Manages user logins.
+from flask_login import LoginManager
 
 # Initialize our database object.
 db = SQLAlchemy()
@@ -29,6 +31,17 @@ def create_app():
     from .models import User, Note
     # Call function to create database.
     create_database(app)
+    # Initialize a Login Manager.
+    login_manager = LoginManager()
+    # Sets the view to redirect users that are not logged in to (the login page.)
+    login_manager.login_view = 'auth.login'
+    # Integrates the Login Manager with the app.
+    login_manager.init_app(app)
+     
+    @login_manager.user_loader
+    def load_user(id):
+        # Returns the user associated with the provided id.
+        return User.query.get(int(id))
     
     return app
 

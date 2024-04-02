@@ -3,5 +3,30 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>This is the home page.</h1>
+<!-- Displaying all of the user's notes. -->
+<h1 align="center">Notes</h1>
+<ul class="list-group list-group-flush" id="notes">
+    <!-- Remember, user has a property called 'notes' (a list.) -->
+    {% for note in user.notes %}
+        <li class="list-group-item">
+            <!-- Display the note's data field -->
+            {{ note.data }}
+            <!-- Display a button to delete the note.  When it is clicked, the 
+            function deleteNote() function will be called and passed the note id. 
+            -->
+            <button type="button" class="close" onClick="deleteNote({{note.id}})">
+                <!-- Special character code for fancy X symbol. -->
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </li>>
+    {% endfor %}
+</ul>
+<!-- Form for creating and submitting a new note. -->
+<form method="POST">
+    <textarea name="note" id="note" class="form-control"></textarea>
+    <br />
+    <div align="center">
+        <button type="submit" class="btn btn-primary">Add Note</button>"
+    </div>
+</form>
 {% endblock %}
