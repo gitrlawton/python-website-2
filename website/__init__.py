@@ -3,6 +3,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
+from os import path
+
 # Initialize our database object.
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -20,5 +22,19 @@ def create_app():
     # Register the blueprints.
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    # BTW, '.' is a relative import.  We're importing the models here,
+    # not because we're going to use them in this file, but because in
+    # order to import them, they need to be created first (and we want 
+    # them to be created first before we create our database.)
+    from .models import User, Note
+    # Call function to create database.
+    create_database(app)
     
     return app
+
+# Creates the database if it doesn't already exist.
+def create_database(app):
+    # Check if the path: website/database.db doesn't already exist.
+    if not path.exists('website/' + DB_NAME):
+        db.create_all(app=app)
+        print("Database created successfully.")
